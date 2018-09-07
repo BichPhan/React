@@ -8,8 +8,8 @@ class SizeSetting extends Component {
                     <h3 className="panel-title">Color Picker</h3>
                 </div>
                 <div className="panel-body">
-                    <button type="button" classNameName="btn btn-success">Giảm</button>
-                    <button type="button" classNameName="btn btn-success">Tăng</button>
+                    <button type="button" className="btn btn-success">Giảm</button>
+                    <button type="button" className="btn btn-success">Tăng</button>
                 </div>
             </div >
         );
