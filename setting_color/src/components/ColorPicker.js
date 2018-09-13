@@ -9,7 +9,6 @@ class ColorPicker extends Component {
     }
 
     showColor(color){
-        console.log(this.props.color);
        return{
             backgroundColor : color
        }
