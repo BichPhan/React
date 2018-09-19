@@ -10,56 +10,143 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tasks: [] //id : unique, name, status, 
+      tasks: [], //id : unique, name, status, 
+      isDisplayForm: false,
+      taskEditing: null
     }
   }
 
-
-
-  onGenerateData = () => {
-    var randomstring = require("randomstring");
-    var tasks = [
-      {
-        id: randomstring.generate(),
-        name: 'Học lập trình',
-        status: true
-      },
-      {
-        id: randomstring.generate(),
-        name: 'Đi bơi',
-        status: false
-      },
-      {
-        id: randomstring.generate(),
-        name: 'Ngủ',
-        status: true
-      }
-
-    ];
-    this.setState({
-      tasks: tasks
-    });
-    
+  componentWillMount() { // luu tru du lieu vao state
+    if (localStorage && localStorage.getItem('tasks')) {
+      var tasks = JSON.parse(localStorage.getItem('tasks'));
+      this.setState({
+        tasks: tasks
+      })
+    }
   }
+
+  // onGenerateData = () => {
+  //   var randomstring = require("randomstring");
+  //   var tasks = [
+  //     {
+  //       id: randomstring.generate(),
+  //       name: 'Học lập trình',
+  //       status: true
+  //     },
+  //     {
+  //       id: randomstring.generate(),
+  //       name: 'Đi bơi',
+  //       status: false
+  //     },
+  //     {
+  //       id: randomstring.generate(),
+  //       name: 'Ngủ',
+  //       status: true
+  //     }
+  //   ];
+  //   this.setState({
+  //     tasks: tasks
+  //   });
+  //   localStorage.setItem('tasks', JSON.stringify(tasks)); //giong nhu cookie luu tam thoi tren trinh duyet
+  // }
 
   // toggle redux
   onToggleForm = () => {
-    var { itemEditing } = this.props;
-    if (itemEditing && itemEditing.id !== '') {
-      this.props.onOpenForm();
-    } else {
-      this.props.onToggleForm();
+    if (this.state.isDisplayForm && this.state.taskEditing !== null) {
+      this.setState({
+        isDisplayForm: true,
+        taskEditing: null
+      });
     }
-    this.props.onClearTask({
-      id: '',
-      name: '',
-      status: false
+    else {
+      this.setState({
+        isDisplayForm: !this.state.isDisplayForm,
+        taskEditing: null
+      });
+    }
+  }
+  onCloseForm = () => {
+    this.setState({
+      isDisplayForm: false
+    });
+  }
+  onShowForm = () => {
+    this.setState({
+      isDisplayForm: true
     });
   }
 
-  render() {
+  onSubmit = (data) => {
+    var randomstring = require("randomstring");
+    var { tasks } = this.state;
+    if (data.id === '') {
+      data.id = randomstring.generate();
+      tasks.push(data);
+    }
+    else {
+      var index = this.findIndex(data.id);
+      tasks[index] = data;
+    }
+    this.setState({
+      tasks: tasks,
+      taskEditing: null
+    });
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
+  onUpdateStatus = (id) => {
+    var { tasks } = this.state;
+    var index = this.findIndex(id);
+    if (index !== -1) {
+      tasks[index].status = !tasks[index].status;
+      this.setState({
+        tasks: tasks
+      });
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+  }
+  findIndex = (id) => {
+    var result = -1;
+    var { tasks } = this.state;
+    tasks.forEach((task, index) => {
+      if (task.id === id) {
+        result = index;
+      }
+    });
+    return result;
+  }
 
-    var { isDisplayForm } = this.props;
+  onDelete = (id) => {
+    var { tasks } = this.state;
+    var index = this.findIndex(id);
+    if (index !== -1) {
+      tasks.splice(index, 1); // splice de xoa phan tu index vaf 1 ban ghi
+      this.setState({
+        tasks: tasks
+      });
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+    this.onCloseForm();
+  }
+
+  onUpdate = (id) => {
+    var { tasks } = this.state;
+    var index = this.findIndex(id);
+    var taskEditing = tasks[index];
+    this.setState({
+      taskEditing: taskEditing
+    });
+    this.onShowForm();
+  }
+
+
+  render() {
+    var { tasks, isDisplayForm, taskEditing } = this.state; // var tasks = this.state.tasks tạo biến tasks,isDisplayForm từ state
+    var elTaskForm = isDisplayForm ? <TaskForm
+      onSubmit={this.onSubmit}
+      onCloseForm={this.onCloseForm}
+      task={taskEditing}
+
+    /> : '';
 
     return (
       <div className="container">
@@ -68,18 +155,20 @@ class App extends Component {
         </div>
         <div className="row">
           <div className={isDisplayForm === true ? 'col-xs-4 col-sm-4 col-md-4 col-lg-4' : ''}>
-            <TaskForm />
+            {elTaskForm}
           </div>
           <div className={isDisplayForm === true ? 'col-xs-8 col-sm-8 col-md-8 col-lg-8' : 'col-xs-12 col-sm-12 col-md-12 col-lg-12'}>
             <button type="button" className="btn btn-primary" onClick={this.onToggleForm} >
-              <span className="fa fa-plus mr-5"></span>
-              Thêm Công Việc
-                        </button>
-            <button type="button" className="btn btn-danger ml-5" onClick={this.onGenerateData} >
-              Generate Data
-                        </button>
+              <span className="fa fa-plus mr-5"></span>Thêm Công Việc
+            </button>
+            {/* <button type="button" className="btn btn-danger ml-5" onClick={this.onGenerateData}>Generate Data</button> */}
             <TaskControl />
-            <TaskList />
+            <TaskList
+              tasks={tasks}
+              onUpdateStatus={this.onUpdateStatus}
+              onDelete={this.onDelete}
+              onUpdate={this.onUpdate}
+            />
           </div>
         </div>
       </div>
@@ -87,12 +176,12 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    isDisplayForm: state.isDisplayForm,
-    itemEditing: state.itemEditing
-  };
-};
+// const mapStateToProps = state => {
+//   return {
+//     isDisplayForm: state.isDisplayForm,
+//     itemEditing: state.itemEditing
+//   };
+// };
 
 // const mapDispatchToProps = (dispatch, props) => {
 //     return {

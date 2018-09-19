@@ -23,7 +23,7 @@ class TaskSortControl extends Component {
                         aria-haspopup="true"
                         aria-expanded="true"
                     >
-                        Sắp Xếp <span className="fa fa-caret-square-o-down ml-5"></span>
+                        Sắp Xếp <i className="far fa-caret-square-down ml-5"></i>
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
                         <li onClick={ () => this.onClick('name', 1) }>
@@ -70,11 +70,11 @@ class TaskSortControl extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        sort : state.sort
-    };
-};
+// const mapStateToProps = state => {
+//     return {
+//         sort : state.sort
+//     };
+// };
 
 // const mapDispatchToProps = (dispatch, props) => {
 //     return {

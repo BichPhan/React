@@ -3,54 +3,32 @@ import React, { Component } from 'react';
 // import * as actions from './../actions/index';
 
 class TaskItem extends Component {
-
-    showStatusElement(){
-        return (
-            <span
-                className={ this.props.task.status ? 'label label-danger' : 'label label-info' }
-                onClick={ this.onUpdateStatus }
-            >{ this.props.task.status === true ? 'Kích Hoạt' : 'Ẩn' }</span>
-        );
-    }
-
     onUpdateStatus = () => {
         this.props.onUpdateStatus(this.props.task.id);
     }
-
-    onDeleteItem = () => {
-        this.props.onDeleteTask(this.props.task.id);
-        this.props.onCloseForm();
+    onDelete = () => {
+        this.props.onDelete(this.props.task.id);
     }
-
-    onEditTask = () => {
-        this.props.onOpenForm();
-        this.props.onEditTask(this.props.task);
+    onUpdate = () => {
+        this.props.onUpdate(this.props.task.id);
     }
-
     render() {
+        var { task, index } = this.props;
         return (
             <tr>
-                {/* <td>{ this.props.index }</td> */}
-                {/* <td>{ this.props.task.name }</td> */}
+                <td>{index + 1}</td>
+                <td>{task.name}</td>
                 <td className="text-center">
-                    {/* { this.showStatusElement() } */}
-                    {/* <span
-                className='label label-danger'
-                onClick={ this.onUpdateStatus }
-                >Kích Hoạt</span> */}
-
+                    <span onClick={this.onUpdateStatus} className={task.status === true ? 'label label-danger' : 'label label-success'}>{task.status === true ? 'Kích Hoạt' : 'Ẩn'}</span>
                 </td>
                 <td className="text-center">
-                    <button
-                        type="button"
-                        className="btn btn-warning"
-                        onClick={ this.onEditTask }>
-                        <span className="fa fa-pencil mr-5"></span>Sửa
+                    <button type="button" className="btn btn-warning" onClick={this.onUpdate}>
+                        <span className="fa fa fa-edit mr-5"></span>Sửa
                     </button>
                     &nbsp;
                     <button
-                        type="button" className="btn btn-danger"
-                        onClick={ this.onDeleteItem }>
+                        type="button" className="btn btn-danger" onClick={this.onDelete}
+                    >
                         <span className="fa fa-trash mr-5"></span>Xóa
                     </button>
                 </td>
@@ -59,9 +37,9 @@ class TaskItem extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {};
-};
+// const mapStateToProps = state => {
+//     return {};
+// };
 
 // const mapDispatchToProps = (dispatch, props) => {
 //     return {
