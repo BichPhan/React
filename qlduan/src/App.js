@@ -12,7 +12,14 @@ class App extends Component {
     this.state = {
       tasks: [], //id : unique, name, status, 
       isDisplayForm: false,
-      taskEditing: null
+      taskEditing: null,
+      filter: {
+        name: '',
+        status: -1
+      },
+      keyword: '',
+      sortBy: 'name',
+      sortValue: 1
     }
   }
 
@@ -138,9 +145,65 @@ class App extends Component {
     this.onShowForm();
   }
 
+  onFilter = (filterName, filterStatus) => {
+    filterStatus = parseInt(filterStatus, 10);
+    this.setState({
+      filter: {
+        name: filterName.toLowerCase(),
+        status: filterStatus
+      }
+    })
+  }
+  onSearch = (keyword) => {
+    this.setState({
+      keyword: keyword
+    });
+  }
+
+  onSort = (sortBy, sortValue) => {
+    this.setState({
+      sortBy: sortBy,
+      sortValue: sortValue
+    });
+
+  }
+
 
   render() {
-    var { tasks, isDisplayForm, taskEditing } = this.state; // var tasks = this.state.tasks tạo biến tasks,isDisplayForm từ state
+    var { tasks, isDisplayForm, taskEditing, filter, keyword, sortBy, sortValue } = this.state; // var tasks = this.state.tasks tạo biến tasks,isDisplayForm từ state
+
+    if (filter) {
+      if (filter.name) {
+        tasks = tasks.filter((task) => {
+          return task.name.toLowerCase().indexOf(filter.name) !== -1;
+        });
+      }
+      tasks = tasks.filter((task) => {
+        if (filter.status === -1) {
+          return task;
+        } else {
+          return task.status === (filter.status === 1 ? true : false)
+        }
+      });
+    }
+    if(sortBy==='name'){
+      tasks.sort((a,b)=>{
+        if(a.name>b.name) return sortValue;
+        else if (a.name<b.name) return -sortValue;
+        else return 0;
+      });
+    }else{
+      tasks.sort((a,b)=>{
+        if(a.status>b.status) return -sortValue;
+        else if (a.status<b.status) return sortValue;
+        else return 0;
+      });
+    }
+    if (keyword) {
+      tasks = tasks.filter((task) => {
+        return task.name.toLowerCase().indexOf(keyword) !== -1;
+      });
+    }
     var elTaskForm = isDisplayForm ? <TaskForm
       onSubmit={this.onSubmit}
       onCloseForm={this.onCloseForm}
@@ -162,12 +225,18 @@ class App extends Component {
               <span className="fa fa-plus mr-5"></span>Thêm Công Việc
             </button>
             {/* <button type="button" className="btn btn-danger ml-5" onClick={this.onGenerateData}>Generate Data</button> */}
-            <TaskControl />
+            <TaskControl
+              onSearch={this.onSearch}
+              onSort={this.onSort}
+              sortBy={sortBy}
+              sortValue={sortValue}
+            />
             <TaskList
               tasks={tasks}
               onUpdateStatus={this.onUpdateStatus}
               onDelete={this.onDelete}
               onUpdate={this.onUpdate}
+              onFilter={this.onFilter}
             />
           </div>
         </div>
