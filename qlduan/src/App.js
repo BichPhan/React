@@ -3,6 +3,7 @@ import './App.css';
 import TaskList from './components/TaskList';
 import TaskForm from './components/TaskForm';
 import TaskControl from './components/TaskControl';
+import {findIndex,filter} from 'lodash';
 // import { connect } from 'react-redux';
 // import * as actions from './actions/index';
 
@@ -124,7 +125,10 @@ class App extends Component {
 
   onDelete = (id) => {
     var { tasks } = this.state;
-    var index = this.findIndex(id);
+    // var index = this.findIndex(id);
+    var index = findIndex(tasks, (task) => {
+      return task.id === id;
+    });
     if (index !== -1) {
       tasks.splice(index, 1); // splice de xoa phan tu index vaf 1 ban ghi
       this.setState({
@@ -174,9 +178,17 @@ class App extends Component {
 
     if (filter) {
       if (filter.name) {
-        tasks = tasks.filter((task) => {
+
+
+        // tasks = tasks.filter((task) => {
+        //   return task.name.toLowerCase().indexOf(filter.name) !== -1;
+        // });
+
+        tasks=filter(tasks,(task)=>{
           return task.name.toLowerCase().indexOf(filter.name) !== -1;
-        });
+        })
+
+
       }
       tasks = tasks.filter((task) => {
         if (filter.status === -1) {
@@ -186,16 +198,16 @@ class App extends Component {
         }
       });
     }
-    if(sortBy==='name'){
-      tasks.sort((a,b)=>{
-        if(a.name>b.name) return sortValue;
-        else if (a.name<b.name) return -sortValue;
+    if (sortBy === 'name') {
+      tasks.sort((a, b) => {
+        if (a.name > b.name) return sortValue;
+        else if (a.name < b.name) return -sortValue;
         else return 0;
       });
-    }else{
-      tasks.sort((a,b)=>{
-        if(a.status>b.status) return -sortValue;
-        else if (a.status<b.status) return sortValue;
+    } else {
+      tasks.sort((a, b) => {
+        if (a.status > b.status) return -sortValue;
+        else if (a.status < b.status) return sortValue;
         else return 0;
       });
     }
