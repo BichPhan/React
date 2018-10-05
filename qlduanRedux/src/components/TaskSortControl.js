@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
-// import * as actions from './../actions/index';
+import { connect } from 'react-redux';
+import * as actions from './../actions/index';
 
 class TaskSortControl extends Component {
     onClick = (sortBy, sortValue) => {
@@ -68,18 +68,18 @@ class TaskSortControl extends Component {
     }
 }
 
-// const mapStateToProps = state => {
-//     return {
-//         sort : state.sort
-//     };
-// };
+const mapStateToProps = state => {
+    return {
+        sort: state.sort
+    };
+};
 
-// const mapDispatchToProps = (dispatch, props) => {
-//     return {
-//         onSort : (sort) => { // sort.by sort.value
-//             dispatch(actions.sortTask(sort));
-//         }
-//     };
-// };
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        onSort: (sort) => { // sort.by sort.value
+            dispatch(actions.sortTask(sort));
+        }
+    };
+};
 
-export default TaskSortControl;
+export default connect(mapStateToProps, mapDispatchToProps)(TaskSortControl);
