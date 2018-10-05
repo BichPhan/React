@@ -133,7 +133,7 @@ const mapStateToProps = state => {
     return {
         tasks: state.tasks, // state lấy từ reducerIndex
         filterTable: state.filterTable,
-        keyword: state.search
+        keyword: state.search   
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TaskList);
