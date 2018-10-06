@@ -61,7 +61,7 @@ export const searchTask = (keyword) => {
         keyword
     }
 };
-export const searchTask = (sort) => {
+export const sortTask = (sort) => {
     return {
         type: types.SORT,
         sort

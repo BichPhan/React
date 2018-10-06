@@ -23,7 +23,7 @@ var myReducer = (state = initialState, action) => {
             var task = {
                 id: action.task.id,
                 name: action.task.name,
-                status: action.task.status
+                status: (action.task.status === true || action.task.status === 'true') ? true : false
             };
             console.log(action.task);
             if (!task.id) {
@@ -32,7 +32,7 @@ var myReducer = (state = initialState, action) => {
             }
             else {
                 index = findIndex(state, task.id);
-                state[index]=task;
+                state[index] = task;
             }
             localStorage.setItem('tasks', JSON.stringify(state));
             return [...state]; // copy sang 1 array mới r trả về

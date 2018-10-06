@@ -28,10 +28,10 @@ class TaskList extends Component {
         });
 
     }
-    
+
 
     render() {
-        var { tasks, filterTable,keyword } = this.props;// var tasks=this.props.tasks
+        var { tasks, filterTable, keyword, sort } = this.props;// var tasks=this.props.tasks
         if (filterTable.name) {
             tasks = tasks.filter((task) => {
                 return task.name.toLowerCase().indexOf(filterTable.name) !== -1;
@@ -47,23 +47,21 @@ class TaskList extends Component {
 
         tasks = tasks.filter((task) => {
             return task.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
-          });
+        });
 
-        
-    // if (sortBy === 'name') {
-    //   tasks.sort((a, b) => {
-    //     if (a.name > b.name) return sortValue;
-    //     else if (a.name < b.name) return -sortValue;
-    //     else return 0;
-    //   });
-    // } else {
-    //   tasks.sort((a, b) => {
-    //     if (a.status > b.status) return -sortValue;
-    //     else if (a.status < b.status) return sortValue;
-    //     else return 0;
-    //   });
-    // }
-
+        if (sort.by === 'name') {
+            tasks.sort((a, b) => {
+                if (a.name > b.name) return sort.value;
+                else if (a.name < b.name) return -sort.value;
+                else return 0;
+            });
+        } else {
+            tasks.sort((a, b) => {
+                if (a.status > b.status) return -sort.value;
+                else if (a.status < b.status) return sort.value;
+                else return 0;
+            });
+        }
 
         var { filerName, filterStatus } = this.state;
         var elmTasks = tasks.map((task, index) => {
@@ -117,6 +115,8 @@ class TaskList extends Component {
                     </table>
                 </div>
             </div>
+
+
         );
     }
 }
@@ -133,7 +133,8 @@ const mapStateToProps = state => {
     return {
         tasks: state.tasks, // state lấy từ reducerIndex
         filterTable: state.filterTable,
-        keyword: state.search   
+        keyword: state.search,
+        sort: state.sort
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TaskList);
