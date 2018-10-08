@@ -10,7 +10,7 @@ const menus = [
   {
     name: 'Quản lý sản phẩm',
     to: '/product-list',
-    exact: true
+    exact: false
   },
 
 ]
@@ -20,7 +20,7 @@ const MenuLink = ({ label, to, activeOnlyWhenExact }) => {
     <Route
       path={to}
       exact={activeOnlyWhenExact}
-      children={(match) => {
+      children={({ match }) => {
         var active = match ? 'active' : '';
         return (
           <li className={active}>
@@ -41,16 +41,27 @@ class Menu extends Component {
       <div className="navbar navbar-default">
         <a className="navbar-brand" >Call API</a>
         <ul className="nav navbar-nav">
-          <li className="active">
-            <a>Trang chủ</a>
-          </li>
-          <li>
-            <a >Quản lý sản phẩm</a>
-          </li>
+          {this.showmenu(menus)}
         </ul>
       </div>
 
     );
+  }
+  showmenu = (menus) => {
+    var result = null;
+    if (menus.length > 0) {
+      result = menus.map((menu, index) => {
+        return (
+          <MenuLink
+            key={index}
+            label={menu.name}
+            to={menu.to}
+            activeOnlyWhenExact={menu.exact}
+          />
+        )
+      })
+    }
+    return result;
   }
 }
 
