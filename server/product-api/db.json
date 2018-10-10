@@ -11,7 +11,36 @@
       "price": "600",
       "status": "true",
       "id": 2
+    },
+    {
+      "name": "Ip 5 ",
+      "txtPrice": "200",
+      "chkbStatus": true,
+      "id": 3
+    },
+    {
+      "name": "IP7",
+      "txtPrice": "600",
+      "chkbStatus": true,
+      "id": 4
+    },
+    {
+      "name": "ip X",
+      "price": "800",
+      "status": true,
+      "id": 5
+    },
+    {
+      "name": "galaxy 3",
+      "price": "200",
+      "status": true,
+      "id": 6
+    },
+    {
+      "name": "galaxy 3010",
+      "price": "100",
+      "status": "",
+      "id": 7
     }
   ]
- 
 }
