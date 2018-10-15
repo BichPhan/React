@@ -7,40 +7,28 @@
       "status": true
     },
     {
-      "name": "sam sung galaxy s7",
-      "price": "600",
-      "status": "true",
-      "id": 2
-    },
-    {
-      "name": "Ip 5 ",
-      "txtPrice": "200",
-      "chkbStatus": true,
-      "id": 3
-    },
-    {
-      "name": "IP7",
-      "txtPrice": "600",
-      "chkbStatus": true,
-      "id": 4
-    },
-    {
+      "id": 2,
       "name": "ip X",
-      "price": "800",
-      "status": true,
-      "id": 5
+      "price": "500",
+      "status": true
     },
     {
+      "id": 6,
+      "name": "IP7",
+      "price": "400",
+      "status": ""
+    },
+    {
+      "id": 7,
+      "name": "Oppo F1S",
+      "price": "300",
+      "status": ""
+    },
+    {
+      "id": 8,
       "name": "galaxy 3",
       "price": "200",
-      "status": true,
-      "id": 6
-    },
-    {
-      "name": "galaxy 3010",
-      "price": "100",
-      "status": "",
-      "id": 7
+      "status": true
     }
   ]
 }
