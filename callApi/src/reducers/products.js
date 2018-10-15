@@ -1,25 +1,23 @@
-var initialState = [
-    {
-        id: 1,
-        name: 'IP 6 plus',
-        price: 400,
-        status: true
-    },
-    {
-        id: 2,
-        name: 'samsung galaxy',
-        price: 500,
-        status: true
-    },
-    {
-        id: 3,
-        name: 'Oppo F7s',
-        price: 700,
-        status: true
-    }
-];
+import * as Types from './../constants/actionType'
+import { findIndex } from 'lodash';
+
+var initialState = [];
 const products = (state = initialState, action) => {
+    var { id } = action;
     switch (action.type) {
+        case Types.FETCH_PRODUCTS:
+            state = action.products;
+            return [...state];
+        case Types.DELETE_PRODUCT:
+            var index = findIndex(state, (state) => {
+                return state.id === id;
+            });
+            state.splice(index, 1); // splice de xoa phan tu index vaf 1 ban ghi
+            return [...state];
+        case Types.ADD_PRODUCT:
+            state.push(action.product);
+            return [...state];
+
         default: return [...state];
     }
 }
