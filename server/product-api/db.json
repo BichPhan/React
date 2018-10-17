@@ -26,9 +26,15 @@
     },
     {
       "id": 8,
-      "name": "galaxy 3",
+      "name": "galaxy 3000",
+      "price": "3000",
+      "status": false
+    },
+    {
+      "id": 9,
+      "name": "LG LTE2",
       "price": "200",
-      "status": true
+      "status": ""
     }
   ]
 }
