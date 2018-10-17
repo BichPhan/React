@@ -45,8 +45,8 @@ export const actAddProduct = (product) => {
 }
 export const actGetProductRequest = (id) => {
     return (dispatch) => {
-        callApi(`products/${id}`, 'GET', null).then(res => {
-            dispatch(actGetProduct(res.data)); //res.data là dữ liệu do server trả về
+        return callApi(`products/${id}`, 'GET', null).then(res => {
+            return dispatch(actGetProduct(res.data)); //res.data là dữ liệu do server trả về
         });
     }
 }
@@ -57,5 +57,18 @@ export const actGetProduct = (product) => {
     }
 }
 
+export const actUpdateProductRequest = (product) => {
+    return (dispatch) => {
+        return callApi(`products/${product.id}`, 'PUT', product).then(res => {
+            dispatch(actUpdateProduct(res.data)); //res.data là dữ liệu do server trả về
+        });
+    }
+}
+export const actUpdateProduct = (product) => {
+    return {
+        type: Types.UPDATE_PRODUCT,
+        product
+    }
+}
 
 
